@@ -29,7 +29,7 @@ const AddPlayer = async (req, res) => {
     // console.log(req.files);
 
     const format = photo.mimetype.split("/")[1];
-      const path = `${process.cwd()}/src/uploads/${uuid()}.${format}`;
+      const path = `${process.cwd()}/src/uploads/Players/${uuid()}.${format}`;
     // const ImageLink = `${process.cwd()}"upload"${photo.name}.${format}`;
 
     const scheme = Joi.object({
@@ -92,7 +92,7 @@ const PutPlayer = async (req, res) => {
 
     const format = photo.mimetype.split("/")[1];
 
-    const path = process.cwd() + "/src/uploads/" + uuid() + `.${format}`;
+    const path = process.cwd() + "/src/uploads/Players/" + uuid() + `.${format}`;
     const Imagelink = uuid() + `.${format}`;
 
     const UpdatedPlayer = await Players.Put(

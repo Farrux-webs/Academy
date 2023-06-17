@@ -1,6 +1,5 @@
 const Joi = require("joi");
 const { v4: uuid } = require("uuid");
-const pool = require("pg")
 const News = require("../models/news");
 const { Post } = require("../models/news");
 const { Filter } = require("../models/news");
@@ -35,16 +34,33 @@ const GetbyFilter = async (req, res) => {
   }
 };
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 const AddNews = async (req, res) => {
   try {
     const { desc, title, short_desc } = req.body;
 
     const { photo } = req.files;
 
+
     const format = photo.mimetype.split("/")[1];
 
-    const path = process.cwd() + "/src/uploads/" + uuid() + `.${format}`;
-    const Imagelink = uuid() + `.${format}`;
+
+
+    const imagelink = `${uuid()}.${format}`;
+    const path = `${process.cwd()}/src/uploads/News/${imagelink}`;
+
 
     const scheme = Joi.object({
       desc: Joi.string().required(),
@@ -59,14 +75,32 @@ const AddNews = async (req, res) => {
       return res.status(400).json({ message: error.message });
     }
 
-    const PostNews = await News.Post(desc, title, Imagelink, short_desc);
+    const PostNews = await News.Post(desc, title, imagelink, short_desc);
     photo.mv(path);
-    return res.status(201).json({ message: "Successfully posted" });
+    return res.status(201).json({ message: "success", PostNews });
   } catch (error) {
     console.log(error.message);
     return res.status(403).json({ message: "Internal Server Error" });
   }
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 const PutNews = async (req, res) => {
   try {
@@ -76,7 +110,7 @@ const PutNews = async (req, res) => {
 
     const format = photo.mimetype.split("/")[1];
 
-    const path = process.cwd() + "/src/uploads/" + uuid() + `.${format}`;
+    const path = process.cwd() + "/src/uploads/News/" + uuid() + `.${format}`;
     const Imagelink = uuid() + `.${format}`;
 
     const scheme = Joi.object({

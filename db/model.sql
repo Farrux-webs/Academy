@@ -4,6 +4,16 @@ create type player_position as enum('Hujumchi', 'Himoyachi', 'Yarim Himoyachi', 
 
 create extension if not exists "uuid-ossp";
 
+create table aboutus(
+       about_id uuid primary key default  uuid_generate_v4(),
+       about_img text default null,
+       about_desc text not null,
+       about_title text not null,
+       about_created_at timestamp default current_timestamp
+);
+
+insert into aboutus(about_img, about_desc, about_title)values('wedwede', 'wedwdwe', 'wedweded');
+
 create table users(
         user_id  uuid primary key default  uuid_generate_v4(),
         user_name varchar(64) not null,

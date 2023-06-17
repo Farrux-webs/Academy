@@ -43,6 +43,8 @@ const RegisterUser = async (req, res) => {
       password: Joi.string().min(6).max(32).required(),
       age:Joi.number().required()
     });
+
+    console.log(req.body);
     const { error } = scheme.validate({ name, username, password,lastname, age });
     if (error) return res.status(403).json({ message: error.message });
     const user = await Users.foundUser(username);
