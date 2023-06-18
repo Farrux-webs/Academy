@@ -3,24 +3,28 @@ const { v4: uuid } = require("uuid");
 const bcrypt = require("bcrypt");
 
 const Players = require("../models/players");
+const Users = require("../models/users");
 
 const GetPlayer = async (req, res) => {
   const GetData = await Players.Get();
 
-  res.status(200).json({players:GetData });
+  res.status(200).json( GetData );
 };
+
+
 
 const GetOnePlayer = async (req, res) => {
   const { id } = req.params;
 
   GetOneData = await Players.GetOne(id);
 
-  res.status(200).json({player:GetOneData });
+  res.status(200).json({ player: GetOneData });
 };
 
 const AddPlayer = async (req, res) => {
   try {
-    const { number, name, lastname,username,password, age, position } = req.body;
+    const { number, name, lastname, username, password, age, position } =
+      req.body;
     // console.log(req.body);
 
     // console.log(req.body);
@@ -29,24 +33,32 @@ const AddPlayer = async (req, res) => {
     // console.log(req.files);
 
     const format = photo.mimetype.split("/")[1];
-      const path = `${process.cwd()}/src/uploads/Players/${uuid()}.${format}`;
-    // const ImageLink = `${process.cwd()}"upload"${photo.name}.${format}`;
+    const imagelink = `${uuid()}.${format}`;
+    const path = `${process.cwd()}/src/uploads/Players/${imagelink}`;
 
     const scheme = Joi.object({
       number: Joi.number().required(),
       name: Joi.string().min(4).alphanum().required(),
       lastname: Joi.string().min(4).alphanum().required(),
-      username:Joi.string().min(4).alphanum().required(),
-      password:Joi.string().min(4).alphanum().required(),
-      age:Joi.number().required(),
-      position:Joi.string().required(),
+      username: Joi.string().min(4).alphanum().required(),
+      password: Joi.string().min(4).alphanum().required(),
+      age: Joi.number().required(),
+      position: Joi.string().required(),
       age: Joi.number().required(),
       position: Joi.string()
         .valid("Hujumchi", "Himoyachi", "Yarim Himoyachi", "Darvozabon")
         .required(),
     });
 
-    const { error } = await scheme.validate({number,name,lastname,username,password,age,position});
+    const { error } = await scheme.validate({
+      number,
+      name,
+      lastname,
+      username,
+      password,
+      age,
+      position,
+    });
 
     if (error) {
       return res.status(400).json({ message: error.message });
@@ -56,6 +68,10 @@ const AddPlayer = async (req, res) => {
 
     if (takenNumber) {
       return res.status(400).send({ message: "Number is already taken" });
+    }
+    const user = await Users.foundUser(username);
+    if (user) {
+      return res.status(400).json({ message: "User already exists" });
     }
 
     const hashedPassword = await bcrypt.hash(password, 12);
@@ -68,31 +84,34 @@ const AddPlayer = async (req, res) => {
       hashedPassword,
       age,
       position,
-      path
+      imagelink
     );
     // console.log(PostPlayer);
 
     // console.log(photo.name);
 
-    // photo.mv(path);
+    photo.mv(path);
 
-    return res.status(201).json({ message: "Successfully posted", newplayer:PostPlayer });
+    return res
+      .status(201)
+      .json({ message: "Successfully posted", newplayer: PostPlayer });
   } catch (error) {
     console.log(error.message);
     // return res.status(401).json({ message: "Permission denied" });
-    
   }
 };
 
 const PutPlayer = async (req, res) => {
   try {
-    const { number, name, lastname,username,password, age, position } = req.body;
+    const { number, name, lastname, username, password, age, position } =
+      req.body;
     const { id } = req.params;
     const { photo } = req.files;
 
     const format = photo.mimetype.split("/")[1];
 
-    const path = process.cwd() + "/src/uploads/Players/" + uuid() + `.${format}`;
+    const path =
+      process.cwd() + "/src/uploads/Players/" + uuid() + `.${format}`;
     const Imagelink = uuid() + `.${format}`;
 
     const UpdatedPlayer = await Players.Put(
@@ -109,7 +128,9 @@ const PutPlayer = async (req, res) => {
 
     photo.mv(path);
 
-    return res.status(201).json({ message: "Successfully Updated", UpdatedPlayer });
+    return res
+      .status(201)
+      .json({ message: "Successfully Updated", UpdatedPlayer });
   } catch (error) {
     console.log(error.message);
     return res.status(401).json({ message: "Permission denied" });
@@ -121,7 +142,7 @@ const DeletePlayer = async (req, res) => {
     const { id } = req.params;
     const delU = await Players.Delete(id);
 
-    return res.status(204).json({message: "Sucessfully deleted"})
+    return res.status(204).json({ message: "Sucessfully deleted" });
   } catch (error) {
     return res.status(404).json({ message: "Permission Denied" });
   }

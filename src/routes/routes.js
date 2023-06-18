@@ -20,6 +20,7 @@ const {
 } = require("../controllers/news.controller");
 
 const { GetAboutUS, PostAboutUs, PutAboutus, DelAboutUs } = require("../controllers/AboutUs.controller")
+const {sendMessage,getAllcontacts} = require("../controllers/contact")
 
 const { isAuth } = require("../middlewares/is-Auth.middleware");
 const { CheckRole } = require("../middlewares/check-role.middleware");
@@ -41,5 +42,7 @@ routes.get("/filter/date", isAuth, GetbyFilter);
 routes.post("/news/add", isAuth, CheckRole("admin"), AddNews);
 routes.put("/news/put/:id", isAuth, CheckRole("admin"), PutNews);
 routes.delete("/news/del/:id", isAuth, CheckRole("admin"), DelNews);
+routes.post("/add/contacts",isAuth,CheckRole("user"),sendMessage)
+routes.get("/get/contacts",isAuth,CheckRole("admin"), getAllcontacts)
 
 module.exports = { routes };

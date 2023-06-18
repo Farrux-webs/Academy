@@ -5,7 +5,7 @@ const { v4: uuid } = require("uuid");
 const GetAboutUS = async (req, res) => {
   const GetData = await AboutUS.Get();
 
-  res.status(200).json({ GetData });
+  res.status(200).json( GetData );
 };
 
 const PostAboutUs = async (req, res) => {

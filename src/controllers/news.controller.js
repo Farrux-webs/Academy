@@ -7,7 +7,7 @@ const { Filter } = require("../models/news");
 const GetNews = async (req, res) => {
   const GetData = await News.Get();
 
-  res.status(200).json({ GetData });
+  res.status(200).json(GetData);
 };
 
 const GetOneNews = async (req, res) => {

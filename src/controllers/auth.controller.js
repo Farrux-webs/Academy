@@ -44,6 +44,7 @@ const RegisterUser = async (req, res) => {
       age:Joi.number().required()
     });
 
+    
     console.log(req.body);
     const { error } = scheme.validate({ name, username, password,lastname, age });
     if (error) return res.status(403).json({ message: error.message });

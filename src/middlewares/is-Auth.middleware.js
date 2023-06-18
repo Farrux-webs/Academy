@@ -6,7 +6,6 @@ const isAuth = async (req, res, next) => {
 
 
     if (!token) return res.status(401).json({ message: "Permission denied" });
-
     const user = verify(token);
     req.user = user;
     next();

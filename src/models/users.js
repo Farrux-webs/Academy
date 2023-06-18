@@ -12,9 +12,11 @@ const findAll = "select * from users";
 const register = (name, lastname, username, password, age) => fetchOne(cregister, name, lastname, username, password,age);
 const LoginUser = (username, password) => fetchOne(login, username, password);
 const foundUser = (username) => fetchOne(findByUsername, username);
+const Getuser = () => fetch(findAll);
 
 module.exports = {
   register,
-  // LoginUser,
+  LoginUser,
   foundUser,
+  Getuser,
 };

@@ -41,26 +41,20 @@ Insert into users(
 )Values(
        'Adminbek',
        'Adminov', 
-       'Admin001', 
-       '$2a$12$Y1oTrfmr/zm4PwFIT9Tv.u.JZgVT9N76Eir/G0xEtReTPJKOfkTnS',
+       'Admin0202', 
+       '$2a$12$544wVgyxIS9qEVuarAXPlOiON9ou4WH0wQmCbIkI0aV5KfmTgnRmy',
        'admin',
         15
 );
 
--- password: reitmanz
-
-
-
-
--- create table players(
---        player_id  uuid primary key default  uuid_generate_v4(),
---        player_number int  not null,
---        player_firstname text not null,
---        player_lastname text not null,
---        player_age int not null,
---        player_position player_position not null,
---        player_photo text
--- );
+       create table notifs(
+              notif_id uuid primary key default  uuid_generate_v4(),
+              notif_message varchar(255) not null,
+              notif_created_at timestamp default current_timestamp,
+              user_id uuid not null,
+              foreign key(user_id)
+              references users(user_id)
+       );
 
 
 create table news(
